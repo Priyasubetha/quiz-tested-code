@@ -1,0 +1,165 @@
+package servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import servlet.model.Bean;
+import servlet.model.subBean;
+import servlet.service.intConvertionService;
+
+/**
+ * Servlet implementation class directTo
+ */
+@WebServlet("/directTo")
+public class directTo extends HttpServlet {
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//Bean b=new Bean();
+		boolean flag=false;
+		HttpSession session=request.getSession();
+		Map<Integer,ArrayList<String>> map=new HashMap<>();
+		ArrayList<String> list=new ArrayList<>();
+		
+		int currentQuestionNumber,totalNumberOfQuestion;
+		
+		String input1 = request.getParameter("input1");
+		String input2 = request.getParameter("input2");
+		
+		String questionNumberStr=(String)session.getAttribute("questionNumber");
+		String totalQuestionsStr = (String)session.getAttribute("totalNumbersOfQuestions");
+		
+		intConvertionService converttoint = new intConvertionService();
+		int intConvertion[]=converttoint.convertToInt(questionNumberStr,totalQuestionsStr);
+		currentQuestionNumber=intConvertion[0];
+		totalNumberOfQuestion=intConvertion[1];
+		
+		String allInputs[]=new String[6];
+		allInputs[0]=input1;
+		allInputs[1]=input2;
+		
+		if(currentQuestionNumber<=totalNumberOfQuestion) {
+			if(currentQuestionNumber<totalNumberOfQuestion) {
+				
+			for(int i=0;i<2;i++) {
+				session.setAttribute("questionData"+currentQuestionNumber+""+i+"",allInputs[i] );
+			}
+				
+				
+			currentQuestionNumber = currentQuestionNumber+1;
+			session.setAttribute("questionNumber", Integer.toString(currentQuestionNumber));
+			RequestDispatcher dispatch = request.getRequestDispatcher("inputJsp.jsp");
+			dispatch.forward(request, response);
+			}
+			else {
+				for(int i=0;i<2;i++) {
+					session.setAttribute("questionData"+questionNumberStr+""+i+"",allInputs[i] );
+				}
+				System.out.println("ended");
+			
+				for(int i=1;i<=totalNumberOfQuestion;i++) {
+					for(int j=0;j<2;j++) {
+						String getData = (String)session.getAttribute("quesSession"+i+""+j+"");
+						list.add(j,getData);
+					}
+					map.put(i, list);
+					flag=true;
+				}
+			}
+		}
+		
+//		subBean sub= new subBean();
+//		ArrayList<Bean> inputList =sub.arrayListManage(inputList,input1,input2);
+//		
+//		//ArrayList<Bean> inputList = new ArrayList<>();
+//		inputList.add(new Bean(input1,input2));
+//		
+//		//----------##rough work-------
+		
+		if(flag) {
+			for(Map.Entry<Integer, ArrayList<String>> sets : map.entrySet()) {
+				System.out.println(sets.getKey());
+				for(String strList : sets.getValue()) {
+					System.out.println(strList);
+				}
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		//------------
+		
+//		try {
+//		 startNum=Integer.parseInt(start);
+//		
+//		 timeLoop = Integer.parseInt(numAtr);
+//
+//		
+//		}
+//		catch(Exception e) {
+//
+//			if(start!=null && numAtr!=null) {
+//				if(start.matches("\\d+") && numAtr.matches("\\d+")){
+//					startNum=Integer.parseInt(start);
+//					
+//					 timeLoop = Integer.parseInt(numAtr);
+//				}
+//			}
+//		}
+		
+//		
+//		
+//		if(start.equals(numAtr)==false) {
+//			//requestdispatch
+//			
+//			session.setAttribute("start", numAtr);
+//			RequestDispatcher disp = request.getRequestDispatcher("inputJsp.jsp");
+//			disp.forward(request, response);
+//		}
+//		
+//		if(numAtr.equals(start)) {
+//			for(Bean ob:inputList) {
+//				String in1=ob.getInput1();
+//				String in2=ob.getInput2();
+//				System.out.println(in1 + " " +in2);
+//			}
+//		}
+//		
+//		
+		//inputList.add(new Bean("22","33"));
+		
+		
+//		System.out.println(b.getInput1());
+//		System.out.println(b.getInput2());
+//		System.out.println(input1);
+//		System.out.println(input2);
+//		PrintWriter out=response.getWriter();
+//		out.print(input1);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	}
+
+}

@@ -1,0 +1,76 @@
+package servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import servlet.model.Bean;
+
+/**
+ * Servlet implementation class directTo
+ */
+@WebServlet("/directTo")
+public class directTo extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public directTo() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Bean b=new Bean();
+		HttpSession session=request.getSession();
+		String start=(String)session.getAttribute("start");
+		int startNum=Integer.parseInt(start);
+		String numAtr = (String)session.getAttribute("num");
+		int timeLoop = Integer.parseInt(numAtr);
+		String input1 = request.getParameter("input1");
+		String input2 = request.getParameter("input2");
+		ArrayList<Bean> inputList = new ArrayList<>();
+		inputList.add(new Bean(input1,input2));
+		//inputList.add(new Bean("22","33"));
+		if(startNum==timeLoop) {
+		for(Bean ob:inputList) {
+			String in1=ob.getInput1();
+			String in2=ob.getInput2();
+			System.out.println(in1 + " " +in2);
+		}
+		}
+		if(startNum<=timeLoop) {
+			//requestdispatch
+			startNum++;
+			session.setAttribute("start", Integer.toString(startNum));
+			RequestDispatcher disp = request.getRequestDispatcher("inputJsp.jsp");
+			disp.forward(request, response);
+		}
+//		System.out.println(b.getInput1());
+//		System.out.println(b.getInput2());
+//		System.out.println(input1);
+//		System.out.println(input2);
+//		PrintWriter out=response.getWriter();
+//		out.print(input1);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+	}
+
+}

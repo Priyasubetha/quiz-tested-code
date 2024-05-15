@@ -1,0 +1,19 @@
+package servlet.service;
+
+public class intConvertionService {
+
+	public int[] convertToInt(String start,String totalof) {
+		int ar[] = new int[2];
+		int numStart,numTotal;
+		if(start!=null && totalof!=null) {
+			if(start.matches("\\d+") && totalof.matches("\\d+")){
+				numStart=Integer.parseInt(start);
+				
+				numTotal = Integer.parseInt(totalof);
+				ar[0]=numStart;
+				ar[1]=numTotal;
+			}
+		}
+		return ar;
+	}
+}

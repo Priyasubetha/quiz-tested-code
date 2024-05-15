@@ -1,0 +1,5 @@
+package servlet.model;
+
+public class subBean {
+
+}
